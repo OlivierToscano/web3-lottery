@@ -1,0 +1,24 @@
+{
+  "name": "lottery",
+  "version": "1.0.0",
+  "description": "blockchain lottery project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "ETHEREUM",
+    "WEB3",
+    "LOTTERY"
+  ],
+  "author": "Olivier Toscano",
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.5.1",
+    "dotenv": "^16.0.3",
+    "ganache-cli": "^6.12.2",
+    "mocha": "^9.1.2",
+    "solc": "^0.8.9",
+    "web3": "^1.6.0"
+  }
+}

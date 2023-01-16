@@ -1,0 +1,25 @@
+# dependencies
+/node_modules
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+
+# local env files
+.env
+.env*.local
+
+## client
+# dependencies
+/client/node_modules
+/client/.env
+/client/.env*.local
+
+# ethereum contract
+/client/ethereum/contracts/

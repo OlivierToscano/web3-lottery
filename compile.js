@@ -26,8 +26,11 @@ const output = JSON.parse(solc.compile(JSON.stringify(input)));
 
 // write contract into client contracts folder
 for (var contractName in output.contracts['Lottery.sol']) {
-  fs.writeFileSync(`./client/ethereum/contracts/${contractName}.json`, JSON.stringify(output.contracts['Lottery.sol'][contractName]));
+  fs.writeFileSync(
+    `./client/ethereum/contracts/${contractName}.json`,
+    JSON.stringify(output.contracts['Lottery.sol'][contractName])
+    );
 }
 
 // export
-module.exports = output.contracts['Lottery.sol'].Lottery;
+module.exports = output.contracts['Lottery.sol'].LotteryFactory;

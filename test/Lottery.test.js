@@ -3,21 +3,40 @@ const ganache = require('ganache-cli');
 const Web3 = require('web3');
 const web3 = new Web3(ganache.provider());
 
-const { abi, evm } = require('../compile');
+const compiledFactory = require("../client/ethereum/contracts/LotteryFactory.json");
+const compiledLottery = require("../client/ethereum/contracts/Lottery.json");
 
-let lottery;
 let accounts;
+let factory;
+let lotteryAddress;
+let lottery;
 
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
 
-  lottery = await new web3.eth.Contract(abi)
-    .deploy({ data: evm.bytecode.object })
+  factory = await new web3.eth.Contract(compiledFactory.abi)
+    .deploy({ data: compiledFactory.evm.bytecode.object })
     .send({ from: accounts[0], gas: '1000000' });
+
+  const lotteryMinimumParticipation = web3.utils.toWei('0.01', 'ether');
+  await factory.methods.createLottery(lotteryMinimumParticipation).send({
+    from: accounts[0],
+    gas: "1000000",
+  });
+
+  [lotteryAddress] = await factory.methods.getDeployedLotteries().call();
+  lottery = await new web3.eth.Contract(compiledLottery.abi, lotteryAddress);
 });
-describe('Lottery Contract', () => {
-  it('deploys a contract', () => {
+
+describe('Lotteries', () => {
+  it('deploys a factory and a lottery', () => {
+    assert.ok(factory.options.address);
     assert.ok(lottery.options.address);
+  });
+
+  it("marks caller as the lottery manager", async () => {
+    const manager = await lottery.methods.manager().call();
+    assert.equal(accounts[0], manager);
   });
 
   it('allows one account to enter', async () => {
@@ -94,4 +113,6 @@ describe('Lottery Contract', () => {
 
     assert(difference > web3.utils.toWei('1.8', 'ether'));
   });
+  
+
 });

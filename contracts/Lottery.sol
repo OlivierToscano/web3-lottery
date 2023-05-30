@@ -28,7 +28,7 @@ contract Lottery {
     }
     
     function enter() public payable {
-        require(msg.value > minimumParticipation); // in wei
+        require(msg.value >= minimumParticipation); // in wei
         players.push(payable(msg.sender));
     }
     

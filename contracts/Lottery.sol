@@ -20,7 +20,7 @@ contract Lottery {
     address payable[] public players;
     
     // Emitted when the winner has been picked
-    event WinnerHasBeenPicked(address winnerAddress);
+    event WinnerHasBeenPicked(address winnerAddress, uint amount);
 
     constructor(uint minimum, address creator) {
         manager = creator;
@@ -39,12 +39,13 @@ contract Lottery {
     function pickWinner() public restricted {
         // pick up a random indox from players array
         uint index = random() % players.length;
+        uint amount = address(this).balance;
 
         // send funds to the winner
-        players[index].transfer(address(this).balance);
+        players[index].transfer(amount);
         
-        // return winner address value
-        emit WinnerHasBeenPicked(players[index]);
+        // return winner address value and amount transfered
+        emit WinnerHasBeenPicked(players[index], amount);
 
         // reset players array
         players = new address payable[](0);

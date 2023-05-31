@@ -54,6 +54,7 @@
     text-align: left;
     border: 1px solid #ddd;
     padding: 10px 20px;
+    border-radius: var(--border-radius);
 }
 .players h2 {
     margin-bottom: 10px;
@@ -65,7 +66,7 @@
 .lotteries p {
     padding: 0.5em;
     margin-bottom: 0.5em;
-    border-bottom: 1px solid #dadada;
+    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.3);
 }
 
 .newLotteryForm {
@@ -75,6 +76,15 @@
 .code {
     font-weight: 700;
     font-family: var(--font-mono);
+}
+
+.footer {
+    border-top: 1px solid rgba(var(--callout-border-rgb), 0.3);
+    width: 100%;
+    padding: 30px 0;
+}
+.footer p {
+    text-align: center;
 }
 
 .grid {

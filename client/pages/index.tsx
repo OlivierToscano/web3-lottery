@@ -50,7 +50,7 @@ const Factory = (props: { lotteries: Array<string> }) => {
 
     return (
         <div>
-            {/* <h1>Lottery factory</h1> */}
+            <h1>Lottery factory</h1>
 
             <div className={styles.newLotteryForm}>
                 <p>Amount to participate (in ETH)</p>

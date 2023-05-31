@@ -194,10 +194,10 @@ const LotteryIndex = (props: {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
-                {/* <h1>Web3 Lottery App</h1> */}
+                <h1>Web3 Lottery App</h1>
 
                 <div className={styles.description}>
-                    <h2>Copntract</h2>
+                    <h2>Contract</h2>
                     <p>{contract}</p>
                 </div>
 
@@ -210,15 +210,6 @@ const LotteryIndex = (props: {
                         </p>
                     </div>
                 )}
-
-                <div className={styles.description}>
-                    <h2>Addresses</h2>
-                    <p className={styles.textRight}>
-                        This contract is managed by: {manager}
-                        <br />
-                        You are connected with: {accountConnected}
-                    </p>
-                </div>
 
                 {process.env.NETWORK === "goerli" && (
                     <div className={styles.description}>
@@ -256,6 +247,17 @@ const LotteryIndex = (props: {
                     </div>
                 )}
 
+                {winner.address !== "0x0000000000000000000000000000000000000000" && (
+                    <div className={styles.description}>
+                        <h2>Winner</h2>
+                        <p className={styles.textRight}>
+                            {winner.address}
+                            <br />
+                            amount: {web3.utils.fromWei(winner.amount, "ether")} ETH
+                        </p>
+                    </div>
+                )}
+
                 <p className={message.status}>{message.message}</p>
 
                 {players.length > 0 && (
@@ -267,14 +269,13 @@ const LotteryIndex = (props: {
                     </div>
                 )}
 
-                {winner.address !== "0x0000000000000000000000000000000000000000" && (
-                    <div>
-                        <h3>Winner</h3>
-                        <p>
-                            Winner: {winner.address} - amount: {web3.utils.fromWei(winner.amount, "ether")} ETH
-                        </p>
-                    </div>
-                )}
+                <div className={styles.footer}>
+                    <p>
+                        This contract is managed by: {manager}
+                        <br />
+                        You are connected with: {accountConnected}
+                    </p>
+                </div>
             </main>
         </>
     );

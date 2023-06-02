@@ -27,15 +27,11 @@ const Factory = (props: { lotteries: Array<string> }) => {
     const createLottery = async (event: any) => {
         event.preventDefault();
 
-        console.log("create a new lottery");
-
         try {
             const accounts = await web3.eth.getAccounts();
             await factory.methods.createLottery(web3.utils.toWei(bet, "ether")).send({
                 from: accounts[0],
             });
-
-            console.log("creation success");
 
             updateLotteries();
         } catch (err: any) {
@@ -43,8 +39,6 @@ const Factory = (props: { lotteries: Array<string> }) => {
                 message: err.message,
                 status: "error",
             });
-
-            console.log("err", err);
         }
     };
 

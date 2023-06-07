@@ -79,7 +79,17 @@
 }
 
 .newLotteryForm {
-    padding: 1em 0.5em;
+    padding: 1.5em;
+    border: 1px solid rgba(var(--callout-border-rgb), 0.3);
+    border-radius: var(--border-radius);
+}
+.newLotteryForm p {
+    margin-bottom: 1rem;
+}
+.newLotteryForm p label {
+    display: block;
+}
+.newLotteryForm button {
 }
 
 .code {

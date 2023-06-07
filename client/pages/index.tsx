@@ -3,6 +3,7 @@ import factory from "../ethereum/Factory";
 import web3 from "../ethereum/utils/web3";
 import styles from "@/styles/Factory.module.css";
 import Link from "next/link";
+import Head from "next/head";
 
 const Factory = (props: { lotteries: Array<string> }) => {
     // message
@@ -44,42 +45,50 @@ const Factory = (props: { lotteries: Array<string> }) => {
     };
 
     return (
-        <div>
-            <h1>Lottery factory</h1>
+        <>
+            <Head>
+                <title>Web3 Lottery App</title>
+                <meta name="description" content="Web3 Lottery App" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <div className={styles.main}>
+                <h1>Create your own lottery</h1>
 
-            <div className={styles.newLotteryForm}>
-                <p>
-                    <label>Amount to participate (in ETH)</label>
-                    <input
-                        className={styles.input}
-                        type="number"
-                        value={bet}
-                        onChange={(e) => setBet(e.target.value)}
-                    />
-                </p>
-                <p>
-                    <label>Mximum players (0 = unlimited)</label>
-                    <input
-                        className={styles.input}
-                        type="number"
-                        value={maxPlayers}
-                        onChange={(e) => setMaxPlayers(e.target.value)}
-                    />
-                </p>
-                <button className={styles.button} onClick={(e) => createLottery(e)}>
-                    Add a new lottery
-                </button>
-            </div>
+                <div className={styles.newLotteryForm}>
+                    <p>
+                        <label>Amount to participate (in ETH)</label>
+                        <input
+                            className={styles.input}
+                            type="number"
+                            value={bet}
+                            onChange={(e) => setBet(e.target.value)}
+                        />
+                    </p>
+                    <p>
+                        <label>Maximum players (0 = unlimited)</label>
+                        <input
+                            className={styles.input}
+                            type="number"
+                            value={maxPlayers}
+                            onChange={(e) => setMaxPlayers(e.target.value)}
+                        />
+                    </p>
+                    <button className={styles.button} onClick={(e) => createLottery(e)}>
+                        Add a new lottery
+                    </button>
+                </div>
 
-            <div className={styles.lotteries}>
-                {lotteries &&
-                    lotteries.map((address, k) => (
-                        <p key={k}>
-                            <Link href={`/lotteries/${address}`}>View lottery - {address}</Link>
-                        </p>
-                    ))}
+                <div className={styles.lotteries}>
+                    {lotteries &&
+                        lotteries.map((address, k) => (
+                            <p key={k}>
+                                <Link href={`/lotteries/${address}`}>View lottery - {address}</Link>
+                            </p>
+                        ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -192,16 +192,16 @@ const LotteryIndex = (props: {
     return (
         <>
             <Head>
-                <title>Web3 Lottery App</title>
-                <meta name="description" content="Web3 Lottery App" />
+                <title>{`Web3 Lottery ${contract}`}</title>
+                <meta name="description" content={`Web3 Lottery ${contract}`} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
-                <h1>Web3 Lottery App</h1>
+                <h1>Lottery</h1>
 
                 <div className={styles.description}>
-                    <h2>Contract</h2>
+                    <h2>Lottery contract</h2>
                     <p>{contract}</p>
                 </div>
 

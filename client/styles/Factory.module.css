@@ -62,6 +62,10 @@
 .players p {
     margin-bottom: 0.2em;
 }
+.players p.winner {
+    font-weight: bold;
+    color: green;
+}
 .players hr {
     border: 1px solid rgba(var(--callout-border-rgb), 0.3);
     border-style: solid none none;

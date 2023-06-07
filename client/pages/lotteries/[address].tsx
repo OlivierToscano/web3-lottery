@@ -13,7 +13,7 @@ const LotteryIndex = (props: {
     manager: string;
     bet: string;
     players: Array<string>;
-    maxPlayers: string;
+    maxPlayers: number;
     complete: boolean;
     winnerAddress: string;
     winnerAmount: string;
@@ -275,10 +275,12 @@ const LotteryIndex = (props: {
                 {players.length > 0 && (
                     <div className={styles.players}>
                         <h2>players</h2>
-                        <p>Maximum players is {maxPlayers}</p>
+                        {maxPlayers > 0 && <p>Maximum players is {maxPlayers}</p>}
                         <hr />
                         {players.map((player, i) => (
-                            <p key={i}>{player}</p>
+                            <p key={i} className={player === winnerAddress ? styles.winner : ""}>
+                                {player}
+                            </p>
                         ))}
                     </div>
                 )}

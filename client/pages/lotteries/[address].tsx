@@ -13,12 +13,13 @@ const LotteryIndex = (props: {
     manager: string;
     bet: string;
     players: Array<string>;
+    maxPlayers: string;
     complete: boolean;
     winnerAddress: string;
     winnerAmount: string;
 }) => {
     // get manager and players from contract
-    const { contract, manager, bet, winnerAddress, winnerAmount } = props;
+    const { contract, manager, bet, maxPlayers, winnerAddress, winnerAmount } = props;
     const router = useRouter();
 
     if (contract === undefined) {
@@ -127,6 +128,7 @@ const LotteryIndex = (props: {
     lottery.events.WinnerHasBeenPicked({ to: accountConnected }).on("data", async (event: any) => {
         const winnerPicked = event.returnValues;
         setWinner({ address: winnerPicked.winner, amount: winnerPicked.amount });
+        setComplete(true);
 
         const amountInEth = web3.utils.fromWei(winnerPicked.amount, "ether");
 
@@ -185,6 +187,8 @@ const LotteryIndex = (props: {
         setComplete(true);
     };
 
+    const youAreIn = players.filter((address) => address == accountConnected);
+
     return (
         <>
             <Head>
@@ -223,17 +227,25 @@ const LotteryIndex = (props: {
 
                 {!complete && (
                     <div className={styles.grid}>
-                        <div className={styles.card}>
-                            <h2>Want to try your luck?</h2>
-                            <div>
-                                <p>
-                                    Amount: <b>{web3.utils.fromWei(bet, "ether")} Eth</b>
-                                </p>
-                                <button className={styles.button} onClick={handleParticipateForm}>
-                                    Enter
-                                </button>
+                        {youAreIn.length == 0 && (
+                            <div className={styles.card}>
+                                <h2>Want to try your luck?</h2>
+                                <div>
+                                    <p>
+                                        Amount: <b>{web3.utils.fromWei(bet, "ether")} Eth</b>
+                                    </p>
+                                    <button className={styles.button} onClick={handleParticipateForm}>
+                                        Enter
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        )}
+
+                        {youAreIn.length > 0 && (
+                            <div className={styles.card}>
+                                <h2>You are IN!</h2>
+                            </div>
+                        )}
 
                         {accountConnected === manager && players.length > minimumPlayersToPickAWinner && (
                             <div className={styles.card}>
@@ -263,6 +275,8 @@ const LotteryIndex = (props: {
                 {players.length > 0 && (
                     <div className={styles.players}>
                         <h2>players</h2>
+                        <p>Maximum players is {maxPlayers}</p>
+                        <hr />
                         {players.map((player, i) => (
                             <p key={i}>{player}</p>
                         ))}
@@ -288,6 +302,7 @@ export async function getStaticProps(props: any) {
     const manager = await lottery.methods.manager().call();
     const bet = await lottery.methods.bet().call(); // in wei
     const players = await lottery.methods.getPlayers().call();
+    const maxPlayers = await lottery.methods.maxPlayers().call();
     const complete = await lottery.methods.complete().call();
     const winnerAddress = await lottery.methods.winnerAddress().call();
     const winnerAmount = await lottery.methods.winnerAmount().call();
@@ -298,6 +313,7 @@ export async function getStaticProps(props: any) {
             manager,
             bet,
             players,
+            maxPlayers,
             complete,
             winnerAddress,
             winnerAmount,

@@ -8,6 +8,7 @@ const Factory = (props: { lotteries: Array<string> }) => {
     // message
     const [message, setMessage] = useState({ message: "", status: "error" });
     const [bet, setBet] = useState("0.1");
+    const [maxPlayers, setMaxPlayers] = useState("0");
 
     // lotteries list
     const [lotteries, setLotteries] = useState(props.lotteries);
@@ -29,7 +30,7 @@ const Factory = (props: { lotteries: Array<string> }) => {
 
         try {
             const accounts = await web3.eth.getAccounts();
-            await factory.methods.createLottery(web3.utils.toWei(bet, "ether")).send({
+            await factory.methods.createLottery(web3.utils.toWei(bet, "ether"), maxPlayers).send({
                 from: accounts[0],
             });
 
@@ -47,8 +48,24 @@ const Factory = (props: { lotteries: Array<string> }) => {
             <h1>Lottery factory</h1>
 
             <div className={styles.newLotteryForm}>
-                <p>Amount to participate (in ETH)</p>
-                <input className={styles.input} type="number" value={bet} onChange={(e) => setBet(e.target.value)} />
+                <p>
+                    <label>Amount to participate (in ETH)</label>
+                    <input
+                        className={styles.input}
+                        type="number"
+                        value={bet}
+                        onChange={(e) => setBet(e.target.value)}
+                    />
+                </p>
+                <p>
+                    <label>Mximum players (0 = unlimited)</label>
+                    <input
+                        className={styles.input}
+                        type="number"
+                        value={maxPlayers}
+                        onChange={(e) => setMaxPlayers(e.target.value)}
+                    />
+                </p>
                 <button className={styles.button} onClick={(e) => createLottery(e)}>
                     Add a new lottery
                 </button>

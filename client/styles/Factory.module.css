@@ -52,7 +52,7 @@
 }
 .players {
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(var(--callout-border-rgb), 0.3);
     padding: 10px 20px;
     border-radius: var(--border-radius);
 }
@@ -61,6 +61,11 @@
 }
 .players p {
     margin-bottom: 0.2em;
+}
+.players hr {
+    border: 1px solid rgba(var(--callout-border-rgb), 0.3);
+    border-style: solid none none;
+    margin: 1rem 0;
 }
 
 .lotteries p {

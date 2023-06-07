@@ -98,8 +98,8 @@ contract LotteryFactory is Ownable {
         creatorAccount = payable(msg.sender);
     }
 
-    function createLottery(uint minimum) public {
-        address newLottery = address(new Lottery(minimum, payable(msg.sender), creatorAccount));
+    function createLottery(uint _minimum, uint _maxPlayers) public {
+        address newLottery = address(new Lottery(_minimum, _maxPlayers, payable(msg.sender), creatorAccount));
         deployedLotteries.push(payable(newLottery));
 
         emit LotteryHasBeenCreated(newLottery);
@@ -118,6 +118,8 @@ contract Lottery {
     address payable creatorAccount;
     address payable public manager;
     uint public bet;
+    uint public maxPlayers;
+    uint public totalPlayers;
     address payable[] public players;
     mapping(address => bool) aleardyParticipated;
     bool public complete;
@@ -127,10 +129,11 @@ contract Lottery {
     // Emitted when the winner has been picked
     event WinnerHasBeenPicked(address winner, uint amount);
 
-    constructor(uint _bet, address payable _manager, address payable _creatorAccount) {
+    constructor(uint _bet, uint _maxPlayers, address payable _manager, address payable _creatorAccount) {
         creatorAccount = _creatorAccount;
         manager = _manager;
         bet = _bet;
+        maxPlayers = _maxPlayers;
         complete = false;
     }
     
@@ -140,19 +143,29 @@ contract Lottery {
 
         players.push(payable(msg.sender));
         aleardyParticipated[msg.sender] = true;
+        totalPlayers++;
+
+        // if max players has been reached, then pick a winner
+        if (maxPlayers > 0 && totalPlayers == maxPlayers) {
+            pickAWinner();
+        }
     }
     
     function random() private view returns (uint) {
         return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players)));
     }
 
-    function calculateOnePercentFee(uint256 amount) public pure returns (uint256) {
-        return amount/100;
+    function calculateOnePercentFee(uint256 _amount) public pure returns (uint256) {
+        return _amount/100;
     }
     
     function pickWinner() public restricted {
         require(!complete, "Winner has already been picked");
 
+        pickAWinner();
+    }
+
+    function pickAWinner() private {
         // pick up a random indox from players array
         uint index = random() % players.length;
         uint amount = address(this).balance;
@@ -188,4 +201,4 @@ contract Lottery {
     function getPlayers() public view returns (address payable[] memory) {
         return players;
     }
-}   
+}

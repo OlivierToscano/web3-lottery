@@ -51,7 +51,7 @@ const LotteryIndex = (props: {
     const [winner, setWinner] = useState({ address: winnerAddress, amount: winnerAmount });
 
     // etherscan
-    const etherscanLink = `https://goerli.etherscan.io/address/${process.env.CONTRACT_ADDRESS}`;
+    const etherscanLink = `${process.env.ETHERSCAN_URL}${process.env.CONTRACT_ADDRESS}`;
 
     // get contract balance
     const getContractBalance = async () => {
@@ -67,7 +67,7 @@ const LotteryIndex = (props: {
     const resetMessage = () => {
         setMessage({
             message: "",
-            status: "message",
+            status: "message"
         });
     };
 
@@ -134,7 +134,7 @@ const LotteryIndex = (props: {
 
         setMessage({
             message: `A winner has been picked!, congrats to ${winnerPicked.winner} who won ${amountInEth} ETH`,
-            status: "success",
+            status: "success"
         });
     });
 
@@ -154,7 +154,7 @@ const LotteryIndex = (props: {
         try {
             await lottery.methods.enter().send({
                 from: accounts[0],
-                value: bet, // in wei
+                value: bet // in wei
             });
             setMessage({ message: "You have been entered!", status: "success" });
         } catch (err: any) {
@@ -175,7 +175,7 @@ const LotteryIndex = (props: {
         setMessage({ message: "Waiting on transaction success...", status: "info" });
 
         await lottery.methods.pickWinner().send({
-            from: accountConnected,
+            from: accountConnected
         });
 
         // update players
@@ -318,8 +318,8 @@ export async function getStaticProps(props: any) {
             maxPlayers,
             complete,
             winnerAddress,
-            winnerAmount,
-        },
+            winnerAmount
+        }
     };
 }
 
@@ -327,7 +327,7 @@ export async function getStaticProps(props: any) {
 export async function getStaticPaths() {
     return {
         paths: [{ params: { address: "notdefined" } }],
-        fallback: "blocking",
+        fallback: "blocking"
     };
 }
 
